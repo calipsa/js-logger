@@ -47,10 +47,22 @@ describe('Logger', () => {
     const warning = logger.warn('Achtung!')
     expect(transform(warning)).toMatchSnapshot()
 
+    const warningErr = logger.warn(new Error('WARNING!'))
+    const warningErrObj = transform(warningErr)
+    expect(typeof warningErrObj.err).toBe('string')
+    expect(typeof warningErrObj.msg).toBe('string')
+    expect(withoutErr(warningErrObj)).toMatchSnapshot()
+
     const error = logger.error(new Error('ERROR!'))
     const errorObj = transform(error)
     expect(typeof errorObj.err).toBe('string')
     expect(typeof errorObj.msg).toBe('string')
     expect(withoutErr(errorObj)).toMatchSnapshot()
+
+    const fatalErr = logger.fatal(new Error('FATAL!!!'))
+    const fatalErrObj = transform(fatalErr)
+    expect(typeof fatalErrObj.err).toBe('string')
+    expect(typeof fatalErrObj.msg).toBe('string')
+    expect(withoutErr(fatalErrObj)).toMatchSnapshot()
   })
 })

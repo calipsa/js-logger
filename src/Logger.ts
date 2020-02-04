@@ -26,6 +26,7 @@ function extractErrors(data: any[]) {
 }
 
 type Level = keyof typeof levels
+type Method = Exclude<Level, 'fatal'>
 
 type LevelObj = (typeof levels)[Level]
 type LevelNum = LevelObj['n']
@@ -53,7 +54,7 @@ interface Serializers {
   [prop: string]: (o: {}) => {},
 }
 
-type AbstractConsole = Pick<Console, Level>
+type AbstractConsole = Pick<Console, Method>
 
 export interface Options {
   name: string,
@@ -133,7 +134,8 @@ export default class Logger implements AbstractConsole {
       time: new Date(),
     }
 
-    return this.console[lvl](this.transform(log))
+    const method = lvl === 'fatal' ? 'error' : lvl
+    return this.console[method](this.transform(log))
   }
 
   trace(...data: any[]) {
@@ -154,6 +156,10 @@ export default class Logger implements AbstractConsole {
 
   error(...data: any[]) {
     return this.write('error', ...data)
+  }
+
+  fatal(...data: any[]) {
+    return this.write('fatal', ...data)
   }
 
   child(props: {}) {

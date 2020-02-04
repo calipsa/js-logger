@@ -33,9 +33,29 @@ Object {
 exports[`Logger should output correct log 4`] = `
 Object {
   "extra": "xtra",
+  "level": 40,
+  "msg": "WARNING!",
+  "name": "test-log",
+  "severity": "WARNING",
+}
+`;
+
+exports[`Logger should output correct log 5`] = `
+Object {
+  "extra": "xtra",
   "level": 50,
   "msg": "ERROR!",
   "name": "test-log",
   "severity": "ERROR",
+}
+`;
+
+exports[`Logger should output correct log 6`] = `
+Object {
+  "extra": "xtra",
+  "level": 60,
+  "msg": "FATAL!!!",
+  "name": "test-log",
+  "severity": "FATAL",
 }
 `;

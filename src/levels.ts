@@ -19,8 +19,8 @@ export default {
     n: 50,
     severity: 'ERROR',
   },
-  // fatal: {
-  //   n: 60,
-  //   severity: 'FATAL',
-  // },
+  fatal: {
+    n: 60,
+    severity: 'FATAL',
+  },
 } as const
