@@ -23,9 +23,7 @@
   },
   "keywords": [
     "js",
-    "utils",
-    "tz",
-    "timezone"
+    "log"
   ],
   "author": "Anton Veselev",
   "license": "ISC",
