@@ -27,7 +27,9 @@ function extractErrors(data: any[]) {
 
 type Level = keyof typeof levels
 
-type LevelNum = (typeof levels)[Level]
+type LevelObj = (typeof levels)[Level]
+type LevelNum = LevelObj['n']
+type Severity = LevelObj['severity']
 
 interface WithMsg {
   msg: any,
@@ -42,6 +44,7 @@ export interface Log extends WithMsg, WithErr {
   hostname: string,
   pid: number,
   level: LevelNum,
+  severity: Severity,
   time: Date,
   // [key: string]: any,
 }
@@ -71,7 +74,7 @@ export default class Logger implements BaseLogger {
   constructor(options: Options) {
     this.options = options
     this.name = options.name
-    this.minLevel = levels[options.minLevel ?? 'info']
+    this.minLevel = levels[options.minLevel ?? 'info'].n
     this.extraProps = options.extraProps ?? {}
     this.serializers = options.serializers ?? {}
     this.transform = options.transform ?? JSON.stringify
@@ -93,7 +96,8 @@ export default class Logger implements BaseLogger {
   }
 
   private write(lvl: Level, ...data: any[]) {
-    if (levels[lvl] < this.minLevel) {
+    const level = levels[lvl]
+    if (level.n < this.minLevel) {
       return
     }
 
@@ -121,7 +125,8 @@ export default class Logger implements BaseLogger {
       name: this.name,
       hostname,
       pid,
-      level: levels[lvl],
+      level: level.n,
+      severity: level.severity,
       time: new Date(),
     }
 
