@@ -61,9 +61,7 @@ export interface Options {
   transform?: (o: Log) => any,
 }
 
-type BaseLogger = Pick<Console, Level>
-
-export default class Logger implements BaseLogger {
+export default class Logger implements Pick<Console, Level> {
   private readonly options: Options
   private readonly name: string
   private readonly minLevel: LevelNum
