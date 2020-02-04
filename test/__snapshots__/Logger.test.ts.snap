@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logger should output correct log 1`] = `
+Object {
+  "extra": "xtra",
+  "level": 30,
+  "msg": "Some message",
+  "name": "test-log",
+  "severity": "INFO",
+}
+`;
+
+exports[`Logger should output correct log 2`] = `
+Object {
+  "extra": "xtra",
+  "level": 30,
+  "msg": "Number 42",
+  "name": "test-log",
+  "severity": "INFO",
+}
+`;
+
+exports[`Logger should output correct log 3`] = `
+Object {
+  "extra": "xtra",
+  "level": 40,
+  "msg": "Achtung!",
+  "name": "test-log",
+  "severity": "WARNING",
+}
+`;

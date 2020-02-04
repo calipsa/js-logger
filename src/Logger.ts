@@ -53,17 +53,21 @@ interface Serializers {
   [prop: string]: (o: {}) => {},
 }
 
+type AbstractConsole = Pick<Console, Level>
+
 export interface Options {
   name: string,
+  console?: AbstractConsole,
   minLevel?: Level,
   extraProps?: {},
   serializers?: Serializers,
   transform?: (o: Log) => any,
 }
 
-export default class Logger implements Pick<Console, Level> {
+export default class Logger implements AbstractConsole {
   private readonly options: Options
   private readonly name: string
+  private readonly console: AbstractConsole
   private readonly minLevel: LevelNum
   private readonly extraProps: {}
   private readonly serializers: Serializers
@@ -71,6 +75,7 @@ export default class Logger implements Pick<Console, Level> {
 
   constructor(options: Options) {
     this.options = options
+    this.console = options.console ?? console
     this.name = options.name
     this.minLevel = levels[options.minLevel ?? 'info'].n
     this.extraProps = options.extraProps ?? {}
@@ -128,28 +133,27 @@ export default class Logger implements Pick<Console, Level> {
       time: new Date(),
     }
 
-    // eslint-disable-next-line no-console
-    console[lvl](this.transform(log))
+    return this.console[lvl](this.transform(log))
   }
 
   trace(...data: any[]) {
-    this.write('trace', ...data)
+    return this.write('trace', ...data)
   }
 
   debug(...data: any[]) {
-    this.write('debug', ...data)
+    return this.write('debug', ...data)
   }
 
   info(...data: any[]) {
-    this.write('info', ...data)
+    return this.write('info', ...data)
   }
 
   warn(...data: any[]) {
-    this.write('warn', ...data)
+    return this.write('warn', ...data)
   }
 
   error(...data: any[]) {
-    this.write('error', ...data)
+    return this.write('error', ...data)
   }
 
   child(props: {}) {

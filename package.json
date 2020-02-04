@@ -9,7 +9,7 @@
     "es"
   ],
   "scripts": {
-    "test": "exit 0",
+    "test": "jest --no-cache",
     "lint": "eslint './src/**/*.ts'",
     "build:commonjs": "tsc --outDir dist",
     "buildwip:es": "tsc -m ESNext --outDir es",
@@ -32,11 +32,14 @@
   },
   "devDependencies": {
     "@calipsa/eslint-config-typescript": "^1.2.1",
+    "@types/jest": "^25.1.1",
     "@types/lodash": "^4.14.149",
     "@types/node": "^13.7.0",
     "eslint": "^6.8.0",
+    "jest": "^25.1.0",
     "np": "^5.2.1",
     "npm-run-all": "^4.1.5",
+    "ts-jest": "^25.2.0",
     "typescript": "^3.7.5"
   }
 }
