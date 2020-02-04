@@ -29,3 +29,13 @@ Object {
   "severity": "WARNING",
 }
 `;
+
+exports[`Logger should output correct log 4`] = `
+Object {
+  "extra": "xtra",
+  "level": 50,
+  "msg": "ERROR!",
+  "name": "test-log",
+  "severity": "ERROR",
+}
+`;

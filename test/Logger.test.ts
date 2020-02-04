@@ -18,6 +18,10 @@ const withoutDirtyProps = omit([
   'v',
 ])
 
+const withoutErr = omit([
+  'err',
+])
+
 const transform = (s: any) =>
   withoutDirtyProps(JSON.parse(s))
 
@@ -47,5 +51,6 @@ describe('Logger', () => {
     const errorObj = transform(error)
     expect(typeof errorObj.err).toBe('string')
     expect(typeof errorObj.msg).toBe('string')
+    expect(withoutErr(errorObj)).toMatchSnapshot()
   })
 })
