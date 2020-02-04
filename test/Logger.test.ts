@@ -31,9 +31,6 @@ describe('Logger', () => {
       name: 'test-log',
       console: fakeConsole,
       minLevel: 'info',
-      extraProps: {
-        extra: 'xtra',
-      },
     })
     const debug = logger.debug('DEBUG')
     expect(debug).toBeUndefined()
@@ -64,5 +61,31 @@ describe('Logger', () => {
     expect(typeof fatalErrObj.err).toBe('string')
     expect(typeof fatalErrObj.msg).toBe('string')
     expect(withoutErr(fatalErrObj)).toMatchSnapshot()
+  })
+
+  it('should output correct log for a child', () => {
+    const logger = new Logger({
+      name: 'test-log',
+      console: fakeConsole,
+      minLevel: 'info',
+    })
+    const extraProps = {
+      extra: 'xtra',
+    }
+    const child = logger.child(extraProps)
+    const withoutExtraProps = omit(Object.keys(extraProps))
+
+    const args = [
+      {
+        foo: 'bar',
+      },
+      'Some message for child',
+    ]
+    const result = logger.info(...args)
+    const childResult = child.info(...args)
+
+    expect(withoutExtraProps(transform(childResult))).toEqual(transform(result))
+    expect(transform(result)).toMatchSnapshot()
+    expect(transform(childResult)).toMatchSnapshot()
   })
 })

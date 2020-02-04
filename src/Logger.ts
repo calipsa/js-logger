@@ -165,7 +165,10 @@ export default class Logger implements AbstractConsole {
   child(props: {}) {
     return new Logger({
       ...this.options,
-      extraProps: props,
+      extraProps: {
+        ...this.extraProps,
+        ...props,
+      },
     })
   }
 }
