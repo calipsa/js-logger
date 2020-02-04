@@ -1,5 +1,5 @@
 import { identity } from 'lodash'
-import { omit, compose } from 'lodash/fp'
+import { omit } from 'lodash/fp'
 
 import Logger from '../src/Logger'
 
