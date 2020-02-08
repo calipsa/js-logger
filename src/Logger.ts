@@ -1,5 +1,3 @@
-import os from 'os'
-import { pid } from 'process'
 import { format } from 'util'
 
 import {
@@ -8,8 +6,6 @@ import {
 } from 'lodash'
 
 import levels from './levels'
-
-const hostname = os.hostname()
 
 const castValue = <T>(v: T | (() => T)) =>
   v instanceof Function ? v() : v
@@ -48,8 +44,6 @@ interface WithErr {
 
 export interface Log extends WithMsg, WithErr {
   name: string,
-  hostname: string,
-  pid: number,
   level: LevelNum,
   severity: Severity,
   time: Date,
@@ -139,8 +133,6 @@ export default class Logger implements AbstractConsole {
       ...errProp,
       ...msgProp,
       name: this.name,
-      hostname,
-      pid,
       level: level.n,
       severity: level.severity,
       time: new Date(),
