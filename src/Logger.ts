@@ -2,11 +2,17 @@ import os from 'os'
 import { pid } from 'process'
 import { format } from 'util'
 
-import { isPlainObject } from 'lodash'
+import {
+  isPlainObject,
+  mapValues,
+} from 'lodash'
 
 import levels from './levels'
 
 const hostname = os.hostname()
+
+const castValue = <T>(v: T | (() => T)) =>
+  v instanceof Function ? v() : v
 
 /**
  * mutates `data`
@@ -50,6 +56,10 @@ export interface Log extends WithMsg, WithErr {
   // [key: string]: any,
 }
 
+interface ExtraProps {
+  [prop: string]: {} | (() => {}),
+}
+
 interface Serializers {
   [prop: string]: (o: {}) => {},
 }
@@ -60,7 +70,7 @@ export interface Options {
   name: string,
   console?: AbstractConsole,
   minLevel?: Level,
-  extraProps?: {},
+  extraProps?: ExtraProps,
   serializers?: Serializers,
   transform?: (o: Log) => any,
 }
@@ -70,7 +80,7 @@ export default class Logger implements AbstractConsole {
   private readonly name: string
   private readonly console: AbstractConsole
   private readonly minLevel: LevelNum
-  private readonly extraProps: {}
+  private readonly extraProps: ExtraProps
   private readonly serializers: Serializers
   private readonly transform: (o: any) => any
 
@@ -122,8 +132,10 @@ export default class Logger implements AbstractConsole {
         msg: format(first, ...rest),
       }
 
+    const extraProps = mapValues(this.extraProps, castValue)
+
     const log: Log = {
-      ...this.extraProps,
+      ...extraProps,
       ...errProp,
       ...msgProp,
       name: this.name,
