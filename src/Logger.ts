@@ -5,10 +5,8 @@ import {
   mapValues,
 } from 'lodash'
 
+import callOrReturn from './utils/callOrReturn'
 import levels from './levels'
-
-const castValue = <T>(v: T | (() => T)) =>
-  v instanceof Function ? v() : v
 
 /**
  * mutates `data`
@@ -27,10 +25,10 @@ function extractErrors(data: any[]) {
   return errs
 }
 
-type Level = keyof typeof levels
+type Levels = typeof levels
+type Level = keyof Levels
 type Method = Exclude<Level, 'fatal'>
-
-type LevelObj = (typeof levels)[Level]
+type LevelObj = Levels[Level]
 type LevelNum = LevelObj['n']
 type Severity = LevelObj['severity']
 
@@ -126,7 +124,7 @@ export default class Logger implements AbstractConsole {
         msg: format(first, ...rest),
       }
 
-    const extraProps = mapValues(this.extraProps, castValue)
+    const extraProps = mapValues(this.extraProps, callOrReturn)
 
     const log: Log = {
       ...extraProps,
