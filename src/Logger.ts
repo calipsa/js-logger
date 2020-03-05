@@ -6,6 +6,8 @@ import {
 } from 'lodash'
 
 import callOrReturn from './utils/callOrReturn'
+import errorToObject from './utils/errorToObject'
+
 import levels from './levels'
 
 /**
@@ -32,12 +34,14 @@ type LevelObj = Levels[Level]
 type LevelNum = LevelObj['n']
 type Severity = LevelObj['severity']
 
+type ErrorObject = ReturnType<typeof errorToObject>
+
 interface WithMsg {
   msg: any,
 }
 
 interface WithErr {
-  err?: any,
+  err?: ErrorObject,
 }
 
 export interface Log extends WithMsg, WithErr {
@@ -110,7 +114,7 @@ export default class Logger implements AbstractConsole {
     const errs = extractErrors(data)
     const errProp: WithErr = {}
     if (errs.length) {
-      errProp.err = errs[0].stack
+      errProp.err = errorToObject(errs[0])
     }
 
     const [first, ...rest] = data
