@@ -68,26 +68,26 @@ export interface Options {
 }
 
 export default class Logger implements AbstractConsole {
-  private readonly options: Options
-  private readonly name: string
-  private readonly console: AbstractConsole
-  private readonly minLevel: LevelNum
-  private readonly extraProps: ExtraProps
-  private readonly serializers: Serializers
-  private readonly transform: (o: any) => any
+  readonly #options: Options
+  readonly #name: string
+  readonly #console: AbstractConsole
+  readonly #minLevel: LevelNum
+  readonly #extraProps: ExtraProps
+  readonly #serializers: Serializers
+  readonly #transform: (o: any) => any
 
   constructor(options: Options) {
-    this.options = options
-    this.console = options.console ?? console
-    this.name = options.name
-    this.minLevel = levels[options.minLevel ?? 'info'].n
-    this.extraProps = options.extraProps ?? {}
-    this.serializers = options.serializers ?? {}
-    this.transform = options.transform ?? JSON.stringify
+    this.#options = options
+    this.#console = options.console ?? console
+    this.#name = options.name
+    this.#minLevel = levels[options.minLevel ?? 'info'].n
+    this.#extraProps = options.extraProps ?? {}
+    this.#serializers = options.serializers ?? {}
+    this.#transform = options.transform ?? JSON.stringify
   }
 
   private serialize(o: {}) {
-    return Object.entries(this.serializers).reduce(
+    return Object.entries(this.#serializers).reduce(
       (prev, [prop, transform]) => prop in o
         ? ({
           ...prev,
@@ -103,7 +103,7 @@ export default class Logger implements AbstractConsole {
 
   private write(lvl: Level, ...data: any[]) {
     const level = levels[lvl]
-    if (level.n < this.minLevel) {
+    if (level.n < this.#minLevel) {
       return
     }
 
@@ -124,20 +124,20 @@ export default class Logger implements AbstractConsole {
         msg: format(first, ...rest),
       }
 
-    const extraProps = mapValues(this.extraProps, callOrReturn)
+    const extraProps = mapValues(this.#extraProps, callOrReturn)
 
     const log: Log = {
       ...extraProps,
       ...errProp,
       ...msgProp,
-      name: this.name,
+      name: this.#name,
       level: level.n,
       severity: level.severity,
       time: new Date(),
     }
 
     const method = lvl === 'fatal' ? 'error' : lvl
-    return this.console[method](this.transform(log))
+    return this.#console[method](this.#transform(log))
   }
 
   trace(...data: any[]) {
@@ -166,9 +166,9 @@ export default class Logger implements AbstractConsole {
 
   child(props: {}) {
     return new Logger({
-      ...this.options,
+      ...this.#options,
       extraProps: {
-        ...this.extraProps,
+        ...this.#extraProps,
         ...props,
       },
     })
