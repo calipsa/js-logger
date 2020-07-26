@@ -53,11 +53,11 @@ export interface Log extends WithMsg, WithErr {
 }
 
 interface ExtraProps {
-  [prop: string]: {} | (() => {}),
+  [prop: string]: unknown | (() => unknown),
 }
 
 interface Serializers {
-  [prop: string]: (o: {}) => {},
+  [prop: string]: (o: Record<string, unknown>) => unknown,
 }
 
 type AbstractConsole = Pick<Console, Method>
@@ -90,7 +90,7 @@ export default class Logger implements AbstractConsole {
     this.#transform = options.transform ?? JSON.stringify
   }
 
-  private serialize(o: {}) {
+  private serialize(o: Record<string, unknown>) {
     return Object.entries(this.#serializers).reduce(
       (prev, [prop, transform]) => prop in o
         ? ({
@@ -168,7 +168,7 @@ export default class Logger implements AbstractConsole {
     return this.write('fatal', ...data)
   }
 
-  child(props: {}) {
+  child(props: Record<string, unknown>) {
     return new Logger({
       ...this.#options,
       extraProps: {
