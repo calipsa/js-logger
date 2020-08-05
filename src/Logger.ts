@@ -57,7 +57,8 @@ interface ExtraProps {
 }
 
 interface Serializers {
-  [prop: string]: (o: Record<string, unknown>) => unknown,
+  // TODO: replace unknown with something looking like {}
+  [prop: string]: (o: unknown) => unknown,
 }
 
 type AbstractConsole = Pick<Console, Method>
