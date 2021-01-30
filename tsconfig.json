@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "ES2019",
-    "module": "commonjs",
+    "module": "CommonJS",
     "sourceMap": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "pretty": true,
     "declaration": true,
     "alwaysStrict": true,
@@ -14,7 +14,7 @@
     "noImplicitAny": true,
     "downlevelIteration": true,
     "lib": [
-      "esnext"
+      "ESNext"
     ],
     "outDir": "dist"
   },
