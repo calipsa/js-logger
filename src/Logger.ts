@@ -94,11 +94,10 @@ export default class Logger implements AbstractConsole {
   private serialize(o: Record<string, unknown>) {
     return Object.entries(this.#serializers).reduce(
       (prev, [prop, transform]) => prop in o
-        ? ({
+        ? {
           ...prev,
-          // @ts-ignore
           [prop]: transform(o[prop]),
-        })
+        }
         : prev,
       {
         ...o,
